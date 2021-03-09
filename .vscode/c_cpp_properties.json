@@ -1,0 +1,54 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "",
+        "limitSymbolsToIncludedHeaders": true
+      },
+      "includePath": [
+        "/home/jan/catkin_ws/devel/include/**",
+        "/opt/ros/melodic/include/**",
+        "/home/jan/catkin_ws/src/navigation/amcl/include/**",
+        "/home/jan/catkin_ws/src/navigation/base_local_planner/include/**",
+        "/home/jan/catkin_ws/src/beginner_tutorials/include/**",
+        "/home/jan/catkin_ws/src/navigation/carrot_planner/include/**",
+        "/home/jan/catkin_ws/src/navigation/clear_costmap_recovery/include/**",
+        "/home/jan/catkin_ws/src/navigation/costmap_2d/include/**",
+        "/home/jan/catkin_ws/src/navigation/dwa_local_planner/include/**",
+        "/home/jan/catkin_ws/src/geographic_info/geodesy/include/**",
+        "/home/jan/catkin_ws/src/navigation/global_planner/include/**",
+        "/home/jan/catkin_ws/src/kobuki_bumper2pc/include/**",
+        "/home/jan/catkin_ws/src/kobuki_gazebo_plugins/include/**",
+        "/home/jan/catkin_ws/src/kobuki_keyop/include/**",
+        "/home/jan/catkin_ws/src/kobuki_node/include/**",
+        "/home/jan/catkin_ws/src/kobuki_safety_controller/include/**",
+        "/home/jan/catkin_ws/src/navigation/map_server/include/**",
+        "/home/jan/catkin_ws/src/navigation/move_base/include/**",
+        "/home/jan/catkin_ws/src/navigation/move_slow_and_clear/include/**",
+        "/home/jan/catkin_ws/src/navigation/nav_core/include/**",
+        "/home/jan/catkin_ws/src/navigation/navfn/include/**",
+        "/home/jan/catkin_ws/src/qualisys/include/**",
+        "/home/jan/catkin_ws/src/robot_localization/include/**",
+        "/home/jan/catkin_ws/src/navigation/rotate_recovery/include/**",
+        "/home/jan/catkin_ws/src/scripts/include/**",
+        "/home/jan/catkin_ws/src/common_msgs/sensor_msgs/include/**",
+        "/home/jan/catkin_ws/src/geometry2/tf2/include/**",
+        "/home/jan/catkin_ws/src/geometry2/tf2_bullet/include/**",
+        "/home/jan/catkin_ws/src/geometry2/tf2_eigen/include/**",
+        "/home/jan/catkin_ws/src/geometry2/tf2_geometry_msgs/include/**",
+        "/home/jan/catkin_ws/src/geometry2/tf2_kdl/include/**",
+        "/home/jan/catkin_ws/src/geometry2/tf2_msgs/include/**",
+        "/home/jan/catkin_ws/src/geometry2/tf2_ros/include/**",
+        "/home/jan/catkin_ws/src/geometry2/tf2_sensor_msgs/include/**",
+        "/home/jan/catkin_ws/src/turtlebot_apps/turtlebot_actions/include/**",
+        "/home/jan/catkin_ws/src/unique_identifier/unique_id/include/**",
+        "/home/jan/catkin_ws/src/navigation/voxel_grid/include/**",
+        "/home/jan/catkin_ws/src/yocs_cmd_vel_mux/include/**",
+        "/home/jan/catkin_ws/src/yocs_controllers/include/**",
+        "/usr/include/**"
+      ],
+      "name": "ROS"
+    }
+  ],
+  "version": 4
+}

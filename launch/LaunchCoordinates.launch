@@ -1,0 +1,18 @@
+<launch>
+    <rosparam command="load" file="$(find scripts)/config/evaluation_specification.yaml"/>
+    <node name="ManageCoordinatesNode" pkg="scripts" type="ManageCoordinates.py"/>
+    <node name="KalmanPositionNode" pkg="scripts" type="KalmanPosition.py"/>
+    <node name="OdomControllerNode" pkg="scripts" type="OdomController.py"/>
+</launch>
+
+
+
+
+
+
+
+<!-- <launch>
+    <arg name="CoordinateFile"/>
+    <node name="PublishYAMLCoordinate" pkg="scripts" type = "ManageCoordinates.py" args="$(find scripts)/config/$(arg CoordinateFile)"/>
+</launch>
+-->
