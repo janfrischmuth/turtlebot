@@ -10,18 +10,18 @@ from std_msgs.msg import String
 #from ManageCoordinates import CoordCount, nextCoord
 #from scripts.msg import PoseMsg
 
-x = 0.0 #RobCoord[0]
-y = 0.0 #RobCoord[1]
+x = RobCoord[0]
+y = RobCoord[1]
 z = 0.0
 roll = 0.0
 pitch = 0.0
-yaw = 0.0 #RobCoord[5]
-#accuracy=0.1
+yaw = RobCoord[5]
+accuracy=0.1
 speed = Twist()
 goal = Point()
-goal.x = 3 #nextCoord[0]
-goal.y = 4 #nextCoord[1]
-#goal.yaw = nextCoord[5]
+goal.x = nextCoord[0]
+goal.y = nextCoord[1]
+goal.yaw = nextCoord[5]
 
 def OdomFeedb(msg):
     global x,y,yaw
@@ -40,18 +40,20 @@ def main():
         x_diff = goal.x - x
         y_diff = goal.y - y
         angle_to_goal = atan2(y_diff, x_diff)
-        #PosError=nextCoord-RobCoord
-    #while PosError < accuracy: all of WHILE function should be eingerueckt
-        if abs(angle_to_goal - yaw) > 0.3:
-            speed.linear.x = 0.0
-            speed.angular.z = 0.3 #yaw'
+        PosError=nextCoord-RobCoord
+        while PosError < accuracy: #all of WHILE function should be eingerueckt
+            if abs(angle_to_goal - yaw) > 0.3:
+                speed.linear.x = 0.0
+                speed.angular.z = 0.3 #yaw'
+            else:
+                speed.linear.x = 0.5
+                speed.angular.z = 0.0 #yaw'
+            #rospy.loginfo(speed)
+            pubVel.publish(speed)
+            r.sleep()  
         else:
-            speed.linear.x = 0.5
-            speed.angular.z = 0.0 #yaw'
-        pubVel.publish(speed)
-        r.sleep()  
-    #else:
-        #pubManCoord.publish("Robot arrived at next coordinate")
+            #rospy.loginfo("Robot aarived at next coordinate")
+            pubManCoord.publish("Robot arrived at next coordinate")
 
 
 if __name__=='__main__':

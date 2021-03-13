@@ -1,1 +1,4 @@
-geometry_msgs/Point PoseMsg
+float64 x
+float64 y
+float64 z
+
