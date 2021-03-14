@@ -41,6 +41,7 @@ class CoordinateManager:
 
 
 
+
 def main():
     rospy.init_node('CoordinateManager')
     print("node CoordinateManager successfully initialised")

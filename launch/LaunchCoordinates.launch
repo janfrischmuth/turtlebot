@@ -8,9 +8,6 @@
 
 
 
-
-
-
 <!-- <launch>
     <arg name="CoordinateFile"/>
     <node name="PublishYAMLCoordinate" pkg="scripts" type = "ManageCoordinates.py" args="$(find scripts)/config/$(arg CoordinateFile)"/>

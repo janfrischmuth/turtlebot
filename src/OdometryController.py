@@ -46,7 +46,6 @@ class Controller:
         print("hi there")
 
 
-
 def main():
     rospy.init_node('OdometryController')
     print("node OdometryController successfully initialised")
