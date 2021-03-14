@@ -12,7 +12,7 @@ class CoordinateManager:
         self.CoordCount=0 #self. makes the var "global"
         self.z=0.0
         self.poses=rospy.get_param("/poses")
-        self.accuracy=0.1 #[m]???
+        #self.accuracy=0.1 #[m]???
         self.nextCoord=Point() #add yaw later
         self.pub=rospy.Publisher('/CoordinationHandling',Point,queue_size=10)
         self.sub=rospy.Subscriber("/arrival", String, self.pubNextCoord)
@@ -22,13 +22,14 @@ class CoordinateManager:
             RowInPoseElement=self.poses[self.CoordCount]
             PoseInformation=RowInPoseElement[1]
             self.nextCoord=(PoseInformation[0], PoseInformation[1], self.z) #tupleIndices must be integer or slices, not tuple
-            print(self.nextCoord, "is the nextPose from the YAML")
-            rospy.loginfo(self.nextCoord, "is the next pose from the YAML file")
+            print("The nextPose from the YAML is:")
+            print(self.nextCoord)
+            #rospy.loginfo(self.nextCoord, "is the next pose from the YAML file")
         except:
             print("getPoseFromYAML() failed!!!")
             rospy.loginfo("getPoseFromYAML() failed!")
     
-    def pubNextCoord(self,Point):
+    def pubNextCoord(self): #,Point)
         try:
             self.pub.publish(self.nextCoord[0],self.nextCoord[1],self.nextCoord[2])
             print("I published the nextCoord")
@@ -41,14 +42,14 @@ class CoordinateManager:
 
 
 
-
 def main():
     rospy.init_node('CoordinateManager')
     print("node CoordinateManager successfully initialised")
     abc=CoordinateManager()
-    abc.pub.publish(abc.nextCoord)
-    print("CoordinateManager.py: the nextCoord is:")# %s") %abc.nextCoord
-    print(abc.nextCoord)
+    abc.getPoseFromYAML()
+    abc.pub.publish()
+    #print("CoordinateManager.py: the nextCoord is:")# %s") %abc.nextCoord
+    #print(abc.nextCoord)
     rospy.spin()
 
 

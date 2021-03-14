@@ -4,7 +4,7 @@
 
 import rospy
 from nav_msgs.msg import Odometry
-#from tf.transformations import euler_from_quaternion #### doesn't currently work
+from tf.transformations import euler_from_quaternion #### doesn't currently work
 from geometry_msgs.msg import Point, Twist, Pose, Quaternion
 from math import atan2, sqrt
 from std_msgs.msg import String
