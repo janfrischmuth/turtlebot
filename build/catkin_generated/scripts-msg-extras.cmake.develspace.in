@@ -1,0 +1,2 @@
+set(scripts_MESSAGE_FILES "/home/jan/turtlebot_ws/src/scripts/msg/CustomMsg.msg")
+set(scripts_SERVICE_FILES "")

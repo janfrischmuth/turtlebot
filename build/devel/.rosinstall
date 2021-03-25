@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /home/jan/turtlebot_ws/src/scripts/build/devel/setup.sh
