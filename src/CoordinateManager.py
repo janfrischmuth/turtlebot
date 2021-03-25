@@ -2,8 +2,8 @@
 
 # load coordinates from YAML file, publish nextCoord to path planning node once arrived on nextCoord
 import rospy
-import sys
-import yaml
+# import sys
+# import yaml
 from std_msgs.msg import String
 from geometry_msgs.msg import Point
 
@@ -17,7 +17,7 @@ class CoordinateManager:
         # self.accuracy=0.1 #[m]???
         self.nextCoord = Point()  # add yaw later
         self.pub = rospy.Publisher(
-            '/CoordinationHandling', Point, queue_size=10)
+            "/coordination_handling", Point, queue_size=10)
         self.sub = rospy.Subscriber("/arrival", String, self.pubNextCoord)
 
     def getPoseFromYAML(self):
@@ -26,14 +26,21 @@ class CoordinateManager:
             PoseInformation = RowInPoseElement[1]
             # tupleIndices must be integer or slices, not tuple
             self.nextCoord = (PoseInformation[0], PoseInformation[1], self.z)
-            print("The nextPose from the YAML is:")
-            print(self.nextCoord)
-            #rospy.loginfo(self.nextCoord, "is the next pose from the YAML file")
+            self.pub.publish(
+                self.nextCoord[0], self.nextCoord[1], self.nextCoord[2])
+            # print("The nextPose from the YAML is:")
+            # print(self.nextCoord)
+            # rospy.loginfo(self.nextCoord, "is the next pose from the YAML file")
+            # here: added from previous pubNextCoord which used to be callback from /arrival
         except:
             print("getPoseFromYAML() failed!!!")
             rospy.loginfo("getPoseFromYAML() failed!")
 
-    def pubNextCoord(self):  # ,Point)
+    def pubNextCoord(self, msg):  # , self.nextCoord):  # ,Point)
+        msg_var = msg.data
+        print("------")
+        print("From the TurtleBot I heard")
+        print(msg_var)
         try:
             self.pub.publish(
                 self.nextCoord[0], self.nextCoord[1], self.nextCoord[2])
@@ -42,6 +49,7 @@ class CoordinateManager:
             self.getPoseFromYAML()
             print("the nextCoord is:")  # %s") %self.nextCoord
             print(self.nextCoord)
+            print("------")
             self.rate.sleep()
         except:
             print("pubNextCoord() failed")
@@ -50,13 +58,14 @@ class CoordinateManager:
 def main():
     rospy.init_node('CoordinateManager')
     print("node CoordinateManager successfully initialised")
-    abc = CoordinateManager()
-    abc.getPoseFromYAML()
-    # abc.pub.publish()
-    abc.pubNextCoord()
-    # print("CoordinateManager.py: the nextCoord is:")# %s") %abc.nextCoord
-    # print(abc.nextCoord)
+    # self=CoordinateManager()
+    self = CoordinateManager()
+    rospy.sleep(1.5)  # so that the getPoseFromYAML message will be received
+    self.getPoseFromYAML()
     # while not rospy.is_shutdown:
+    # self.getPoseFromYAML()
+    # rospy.spin()
+    # self.rate.sleep()
     rospy.spin()
 
 
