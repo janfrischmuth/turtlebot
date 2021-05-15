@@ -1,40 +1,60 @@
 <launch>
     <rosparam command="load" file="$(find scripts)/config/evaluation_specification.yaml"/>
-    <node name="CoordinateManagerNode" pkg="scripts" type="CoordinateManager.py" output="screen"/>
-    <node name="KalmanPosNode" pkg="scripts" type="KalmanPos.py" output="screen"/>
-    <node name="OdometryControllerNode" pkg="scripts" type="OdometryController.py" output="screen"/>
 
+    <!--node  
+        name="qualisys" 
+        pkg="mocap_simulator" 
+        type="mocap_simulator_node.py" output="screen">
+        <param name="frame_rate" value="100"/>
+        <param name="publish_tf" value="true"/>
+        <param name="fixed_frame_id" value="odom"/>
+        <rosparam param="model_list">[]</rosparam>
+    </node>
 
-    <!--<node name="ekf_se" pkg="robot_localization" type="ekf_localization_node" clear_params="true" output="screen">
-        <rosparam command="load" file="$(find robot_localization)/params/ekf_template.yaml" />
-        <remap from="/odom" to="/position"/>
-        <remap from="/mocap_qualisys/{subject_name}/odom" to="/position"/>
-
+    <node 
+        name="ekf_node" 
+        pkg="robot_localization" 
+        type="ekf_localization_node" clear_params="true" output="screen">
+        <remap from="/odom" to="/kalman_odom"/>
+        <remap from="/qualisys/mobile_base/odom" to="/kalman_odom"/>
+        <param name="world_frame" value="odom"/>
+        <param name="map_frame" value="map"/>
+        <param name="odom_frame" value="odom"/>
+        <param name="base_link_frame" value="base_footprint"/>
+        
         <param name="odom0" value="/odom"/>
         <rosparam param="odom0_config">[false, false, false,
                                         false, false, false,
                                         true, true, false,
                                         false, false, true,
-                                        false, false, false]</rosparam>
+                                        false, false, false]
+        </rosparam>
 
-        <param name="odom1" value="/mocap_qualisys/{subject_name}/odom"/>
+        <param name="odom1" value="/qualisys/mobile_base/odom"/>
         <rosparam param="odom1_config">[false, false, false,
                                         false, false, false,
                                         true, true, false,
                                         false, false, true,
-                                        false, false, false]</rosparam>
-    </node>/-->
+                                        false, false, false]
+        </rosparam>
+        <param name="odom1_differential" value="true" simple way of saying qualisys is more exact>
+    </node-->
+    <remap from="/gazebo/mobile_base" to="/odom"/>
+    <node 
+        name="CoordinateManagerNode" 
+        pkg="scripts" 
+        type="CoordinateManager.py" output="screen">
+    </node>
 
+    <node 
+        name="KalmanPosNode" 
+        pkg="scripts" 
+        type="KalmanPos.py" output="screen">
+    </node>
+    
+    <node 
+        name="OdometryControllerNode" 
+        pkg="scripts" 
+        type="OdometryController.py" output="screen">
+    </node>/>
 </launch>
-
-
-
-
-
-
-
-<!-- <launch>
-    <arg name="CoordinateFile"/>
-    <node name="PublishYAMLCoordinate" pkg="scripts" type = "ManageCoordinates.py" args="$(find scripts)/config/$(arg CoordinateFile)"/>
-</launch>
--->

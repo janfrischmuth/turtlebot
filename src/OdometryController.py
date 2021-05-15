@@ -2,7 +2,7 @@
 
 # controller for the odometry. sets robot in motion.
 
-from math import atan2, sqrt, pi
+from math import atan2, sqrt  # , pi
 import rospy
 # from nav_msgs.msg import Odometry
 from tf.transformations import euler_from_quaternion  # doesn't currently work
@@ -14,7 +14,8 @@ class Controller:
     def __init__(self):
         self.subGoal = rospy.Subscriber(
             "/coordination_handling", Point, self.updateNextCoord)
-        self.subCurrPos = rospy.Subscriber("/position", Pose, self.driveToGoal)
+        self.subCurrPos = rospy.Subscriber(
+            "/position", Pose, self.driveToGoal)
         self.pubVel = rospy.Publisher(
             '/cmd_vel_mux/input/navi', Twist, queue_size=10)
         self.pubArrival = rospy.Publisher('/arrival', String, queue_size=10)
