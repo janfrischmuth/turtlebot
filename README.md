@@ -22,6 +22,10 @@ How To Install Linux, ROS, …
 - [ ] create folder for own scripts/repo
 - [ ] cd to the directory and in terminal do:
 	git init
+- [ ] set up git account
+	git config —global user.email <email>
+	git config --global user.name <name>
+	git config --global user.signingkey <key>
 - [ ] download own git repo via
 	git clone https://github.com/janfrischmuth/turtlebot.git
 	git checkout <branch>
