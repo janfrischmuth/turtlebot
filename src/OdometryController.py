@@ -40,7 +40,7 @@ class Controller:
 
     def updateNextCoord(self, nextCoordVar):
         self.goal = nextCoordVar
-        print("OdometryController: I heard the goal is:")
+        print("OdometryController.py: I heard the goal is:")
         print(self.goal)
         print("------")
 
@@ -102,11 +102,14 @@ class Controller:
         #print("I published the speed at: ")
         # print(self.speed)
         if abs(self.PosDiff) < self.accuracy_dist:  # self.alpha < self.accuracy_ang +
-            print("I arrived at \n", self.goal)
-            self.pubArrival.publish("I arrived")
+            print("OdometryController.py: I arrived at")
+            print(self.goal)
+            self.pubArrival.publish("OdometryController.py: I arrived")
+            # blabla
 
 
 def main():
+    rospy.sleep(3)
     rospy.init_node('OdometryController')
     print("node OdometryController successfully initialised")
     Controller()
