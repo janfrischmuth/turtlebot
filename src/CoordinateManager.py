@@ -17,7 +17,7 @@ class CoordinateManager:
         # self.accuracy=0.1 #[m]???
         self.nextCoord = Point()  # add yaw later
         self.pub = rospy.Publisher(
-            "/coordination_handling", Point, queue_size=10)
+            "/coordination_handling", Point, queue_size=10, latch=True)
         self.sub = rospy.Subscriber("/arrival", String, self.pubNextCoord)
 
     def getPoseFromYAML(self):
@@ -51,13 +51,13 @@ class CoordinateManager:
             print("CoordinateManager.py: the nextCoord is:")
             print(self.nextCoord)
             print("------")
-            self.rate.sleep()
+            rospy.sleep(0.5)
         except:
             print("pubNextCoord() failed")
 
 
 def main():
-    rospy.sleep(3)
+    # rospy.sleep(3)
     rospy.init_node('CoordinateManager')
     print("node CoordinateManager successfully initialised")
     # self=CoordinateManager()

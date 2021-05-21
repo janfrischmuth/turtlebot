@@ -12,11 +12,11 @@ from geometry_msgs.msg import Point, Quaternion, Pose  # , Twist
 
 class OdomPose:
     def __init__(self):
+        self.OdomPoseVar = rospy.wait_for_message(
+            "/qualisys/mobile_base/odom", Odometry)  # [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
         self.odomSub = rospy.Subscriber(
             "/odometry/filtered", Odometry, self.OdomCallback)
         self.pub = rospy.Publisher('/position', Pose, queue_size=10)
-        self.OdomPoseVar = rospy.wait_for_message(
-            "/qualisys/mobile_base/odom", Odometry)  # [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
         self.point = Point()
         self.quaternion = Quaternion()
 

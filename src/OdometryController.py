@@ -105,6 +105,7 @@ class Controller:
             print("OdometryController.py: I arrived at")
             print(self.goal)
             self.pubArrival.publish("OdometryController.py: I arrived")
+            rospy.sleep(0.5)
             # blabla
 
 

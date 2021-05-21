@@ -1,7 +1,7 @@
 <launch>
     <rosparam command="load" file="$(find scripts)/config/evaluation_specification.yaml"/>
 
-    <node  
+    <!--node  
         name="qualisys" 
         pkg="mocap_simulator" 
         type="mocap_simulator_node.py" output="screen">
@@ -9,7 +9,7 @@
         <param name="publish_tf" value="true"/>
         <param name="fixed_frame_id" value="odom"/>
         <rosparam param="model_list">[base_link]</rosparam>
-    </node>
+    </node-->
 
     <node 
         name="ekf_node" 
