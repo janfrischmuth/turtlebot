@@ -11,13 +11,13 @@ from geometry_msgs.msg import Point
 class CoordinateManager:
     def __init__(self):
         self.CoordCount = 0  # self. makes the var "global"
-        self.z = 0.0
+        #self.z = 0.0
         self.poses = rospy.get_param("/poses")
         self.rate = rospy.Rate(10)  # Hz
         # self.accuracy=0.1 #[m]???
         self.nextCoord = Point()  # add yaw later
         self.pub = rospy.Publisher(
-            "/coordination_handling", Point, queue_size=10)
+            "/coordination_handling", Point, queue_size=10, latch=True)
         self.sub = rospy.Subscriber("/arrival", String, self.pubNextCoord)
 
     def getPoseFromYAML(self):
@@ -25,7 +25,7 @@ class CoordinateManager:
             RowInPoseElement = self.poses[self.CoordCount]
             PoseInformation = RowInPoseElement[1]
             # tupleIndices must be integer or slices, not tuple
-            self.nextCoord = (PoseInformation[0], PoseInformation[1], self.z)
+            self.nextCoord = (PoseInformation[0], PoseInformation[1], 0.0)
             self.pub.publish(
                 self.nextCoord[0], self.nextCoord[1], self.nextCoord[2])
             # print("The nextPose from the YAML is:")
@@ -39,28 +39,31 @@ class CoordinateManager:
     def pubNextCoord(self, msg):  # , self.nextCoord):  # ,Point)
         msg_var = msg.data
         print("------")
-        print("From the TurtleBot I heard")
+        print("CoordinateManager.py: From the TurtleBot I heard")
         print(msg_var)
         try:
             self.pub.publish(
                 self.nextCoord[0], self.nextCoord[1], self.nextCoord[2])
-            print("I published the nextCoord")
+            print("CoordinateManager.py: I published the nextCoord")
             self.CoordCount += 1
             self.getPoseFromYAML()
-            print("the nextCoord is:")  # %s") %self.nextCoord
+            # %s") %self.nextCoord
+            print("CoordinateManager.py: the nextCoord is:")
             print(self.nextCoord)
             print("------")
-            self.rate.sleep()
+            rospy.sleep(0.5)
         except:
             print("pubNextCoord() failed")
 
 
 def main():
+    # rospy.sleep(3)
     rospy.init_node('CoordinateManager')
     print("node CoordinateManager successfully initialised")
     # self=CoordinateManager()
+    # rospy.sleep(1.5)
     self = CoordinateManager()
-    rospy.sleep(1.5)  # so that the getPoseFromYAML message will be received
+    # rospy.sleep(1.5)  # so that the getPoseFromYAML message will be received
     self.getPoseFromYAML()
     # while not rospy.is_shutdown:
     # self.getPoseFromYAML()

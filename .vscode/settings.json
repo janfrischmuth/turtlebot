@@ -12,5 +12,9 @@
     "editor.formatOnSaveMode": "file",
     "python.linting.pylintUseMinimalCheckers": false,
     "cSpell.language": "en",
-    "python.formatting.provider": "autopep8"
+    "python.formatting.provider": "autopep8",
+    "python.analysis.extraPaths": [
+        "/home/jan/catkin_ws/devel/lib/python2.7/dist-packages",
+        "/opt/ros/melodic/lib/python2.7/dist-packages"
+    ]
 }

@@ -48,17 +48,17 @@ find_package(catkin REQUIRED COMPONENTS
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
-add_message_files(
-  FILES
-  CustomMsg.msg
-)
+#add_message_files(
+#  FILES
+#  CustomMsg.msg
+#)
 
 ## Generate services in the 'srv' folder
-# add_service_files(
-#   FILES
-#   Service1.srv
+add_service_files(
+  FILES
+  coordinate_managing.srv
 #   Service2.srv
-# )
+)
 
 ## Generate actions in the 'action' folder
 # add_action_files(
@@ -161,7 +161,7 @@ include_directories(
 ## Mark executable scripts (Python etc.) for installation
 ## in contrast to setup.py, you can choose the destination
 catkin_install_python(PROGRAMS
-  src/KalmanPosition.py src/OdomController.py src/ManageCoordinates.py
+  src/KalmanPos.py src/OdometryController.py src/CoordinateManager.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 

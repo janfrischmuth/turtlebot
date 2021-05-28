@@ -2,7 +2,7 @@
 
 # controller for the odometry. sets robot in motion.
 
-from math import atan2, sqrt, pi
+from math import atan2, sqrt  # , pi
 import rospy
 # from nav_msgs.msg import Odometry
 from tf.transformations import euler_from_quaternion  # doesn't currently work
@@ -14,7 +14,8 @@ class Controller:
     def __init__(self):
         self.subGoal = rospy.Subscriber(
             "/coordination_handling", Point, self.updateNextCoord)
-        self.subCurrPos = rospy.Subscriber("/position", Pose, self.driveToGoal)
+        self.subCurrPos = rospy.Subscriber(
+            "/position", Pose, self.driveToGoal)
         self.pubVel = rospy.Publisher(
             '/cmd_vel_mux/input/navi', Twist, queue_size=10)
         self.pubArrival = rospy.Publisher('/arrival', String, queue_size=10)
@@ -39,7 +40,7 @@ class Controller:
 
     def updateNextCoord(self, nextCoordVar):
         self.goal = nextCoordVar
-        print("OdometryController: I heard the goal is:")
+        print("OdometryController.py: I heard the goal is:")
         print(self.goal)
         print("------")
 
@@ -101,11 +102,15 @@ class Controller:
         #print("I published the speed at: ")
         # print(self.speed)
         if abs(self.PosDiff) < self.accuracy_dist:  # self.alpha < self.accuracy_ang +
-            print("I arrived at \n", self.goal)
-            self.pubArrival.publish("I arrived")
+            print("OdometryController.py: I arrived at")
+            print(self.goal)
+            self.pubArrival.publish("OdometryController.py: I arrived")
+            rospy.sleep(0.5)
+            # blabla
 
 
 def main():
+    rospy.sleep(3)
     rospy.init_node('OdometryController')
     print("node OdometryController successfully initialised")
     Controller()
