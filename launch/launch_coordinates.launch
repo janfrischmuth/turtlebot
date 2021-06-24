@@ -6,13 +6,22 @@
         pkg="robot_localization" 
         type="ekf_localization_node" clear_params="true" output="screen">
 
-        <param name="world_frame" value="map"/>
-        <param name="map_frame" value="map"/>
+        <param name="world_frame" value="mocap"/>
+        <param name="map_frame" value="mocap"/>
         <param name="odom_frame" value="odom"/>
         <param name="base_link_frame" value="base_footprint"/>
 
         <param name="odom0" value="/qualisys/mobile_base/odom"/>
+        <param name="odom0_differential" value="false"/>
         <rosparam param="odom0_config">[false, false, false,
+                                        false, false, false,
+                                        true, true, false,
+                                        false, false, true,
+                                        false, false, false]
+        </rosparam>
+
+        <param name="odom1" value="/odom"/>
+        <rosparam param="odom1_config">[false, false, false,
                                         false, false, false,
                                         true, true, false,
                                         false, false, true,
@@ -23,9 +32,8 @@
     <node name="ekf_node_odom" 
           pkg="robot_localization" 
           type="ekf_localization_node" clear_params="true" output="screen">
-        <!--rosparam command="load" file="$(find scripts)/config/ekf_turtlebot_qualisys.yaml" /-->
         <param name="world_frame" value="odom"/>
-        <param name="map_frame" value="map"/>
+        <param name="map_frame" value="mocap"/>
         <param name="odom_frame" value="odom"/>
         <param name="base_link_frame" value="base_footprint"/>
         
@@ -44,8 +52,9 @@
                                         false, false, true,
                                         false, false, false]
         </rosparam>
-        <!--param name="odom1_differential" value="true"-->
     </node>
+        <!--param name="odom1_differential" value="false"/-->
+        <!--rosparam command="load" file="$(find scripts)/config/ekf_turtlebot_qualisys.yaml" /-->
 
 
     <node
@@ -64,30 +73,43 @@
         type="OdometryController.py" output="screen" required="true">
     </node>/>
 
-    <!--node 
+
+
+    <arg name="real" default="0"/>
+    <!--for real testing-->
+    <!--roslaunch scripts launch_coordinates.launch real:=1-->
+    <group if="$(arg real)">
+      <node 
         pkg="tf" 
         type="static_transform_publisher" 
-        name="link1_broadcaster" 
-        args="0 0 0 0 0 0 odom mocap_sim 10">
-    </node-->
-    <!--node 
-        pkg="tf" 
-        type="static_transform_publisher" 
-        name="link2_broadcaster" 
-        args="0.0 0.0 0.0 0.0 0.0 0.0 mobile_base base_footprint 100">
-    </node-->
-    <!--node 
-        pkg="tf" 
-        type="static_transform_publisher" 
-        name="link1_broadcaster" 
-        args="0 0 0 0 0 0 odom mocap_sim 10">
-    </node-->
-    <!--node 
+        name="link_odom_mocap_broadcaster" 
+        args="0 0 0 0 0 0 odom mocap 100">
+      </node>
+      <node 
         pkg="tf" 
         type="static_transform_publisher" 
         name="link2_broadcaster" 
         args="0.0 0.0 0.4 0.0 0.0 0.0 RB_TB base_footprint 100">
-    </node-->
+      </node>
+    </group>
+    
+    <!--for simulation-->
+    <!--starts automatically unless argument real:=1 is given-->
+    <!--group unless="$(arg real)">
+      <node 
+        pkg="tf" 
+        type="static_transform_publisher" 
+        name="link1_broadcaster" 
+        args="0 0 0 0 0 0 odom mocap 10">
+      </node>
+      <node 
+        pkg="tf" 
+        type="static_transform_publisher" 
+        name="link_base_footprint_broadcaster" 
+        args="0.0 0.0 0.0 0.0 0.0 0.0 mobile_base base_footprint 100">
+      </node>
+    </group-->
+
 
     <arg name="sim" default="0"/>
     <group if="$(arg sim)">
