@@ -127,32 +127,11 @@ class Controller:
         self.pubVel.publish(self.speed)
 
         # infos just for debugging
-        #####
-        # IMPORTANT
-        # seems to be very heavy performance-wise, robot doesn't drive accurately with it enabled
-        # probably better to implement a function that gets called only every second or so
-        #####
-        rospy.logdebug("------")
-        rospy.logdebug("\ngoal = ( %s , %s )" % (self.goal.x, self.goal.y))
-        rospy.logdebug("\nx = %s\ny = %s" % (self.CurrPos.x, self.CurrPos.y))
-        # print("CurrPos is ", self.CurrPos)
+        rospy.logdebug("\ngoal = (% s , % s )\nx= % s\ny= % s\nPosDiff= % s\nyaw= % s\nalpha= % s\nangle_diff= % s\nv_lin= % s\nv_ang= % s\n------\n------" %
+                       (self.goal.x, self.goal.y, self.CurrPos.x, self.CurrPos.y, self.PosDiff, self.yaw, self.alpha, self.angle_diff, self.speed.linear.x, self.speed.angular.z))
+        # these might be interesting, too
         # rospy.logdebug("x_diff = %s" % x_diff)
-        # print("x_diff is", x_diff)
         # rospy.logdebug("y_diff = %s" % y_diff)
-        # print("y_diff is", y_diff)
-        rospy.logdebug("\nPosDiff = %s" % self.PosDiff)
-        # print("PosDiff results in ", self.PosDiff)
-        rospy.logdebug("\nyaw = %s" % self.yaw)
-        # print("yaw = %s" % self.yaw)
-        rospy.logdebug("\nalpha = %s" % self.alpha)
-        # print("alpha is ", self.alpha)
-        rospy.logdebug("\nangle_diff = %s" % self.angle_diff)
-        # print("angle_diff is ", self.angle_diff)
-        rospy.logdebug("\nv_lin = %s" % self.speed.linear.x)
-        # print("v_lin is set to ", self.speed.linear.x)
-        rospy.logdebug("\nv_ang = %s" % self.speed.angular.z)
-        # print("v_ang is set to ", self.speed.angular.z)
-        rospy.logdebug("------")
 
         if abs(self.PosDiff) < self.accuracy_dist:  # self.alpha < self.accuracy_ang +
             rospy.loginfo(
