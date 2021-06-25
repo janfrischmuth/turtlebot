@@ -54,11 +54,11 @@
         pkg="scripts"
         type="coordinate_server.py" output="screen">
     </node>
-    <node 
+    <!--node 
         name="KalmanPosNode" 
         pkg="scripts" 
         type="KalmanPos.py" output="screen">
-    </node>
+    </node-->
     <node 
         name="OdometryControllerNode" 
         pkg="scripts" 
@@ -133,7 +133,7 @@
             type="record"
             args="-o $(find scripts)/bagfiles/ /qualisys/mobile_base/odom /odom /odometry/filtered /cmd_vel_mux/input/navi">
         </node>
-        <remap from="/qualisys/mobile_base/odom" to="/qualisys/RB_TB/odom"/>
+        <!--remap from="/qualisys/mobile_base/odom" to="/qualisys/RB_TB/odom"/-->
     </group>
     <!--to record, type "roslaunch scripts launch_coordinates.launch record:=1"-->
 </launch>
