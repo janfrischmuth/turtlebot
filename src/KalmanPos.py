@@ -13,9 +13,9 @@ from geometry_msgs.msg import Point, Quaternion, Pose  # , Twist
 class OdomPose:
     def __init__(self):
         self.OdomPoseVar = rospy.wait_for_message(
-            "/qualisys/mobile_base/odom", Odometry)  # [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+            "/odometry/filtered", Odometry)  # [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
         self.odomSub = rospy.Subscriber(
-            "/odometry/filtered", Odometry, self.OdomCallback)
+            "/odometry/filtered", Odometry, self.OdomCallback)  # /odometry/filtered
         self.pub = rospy.Publisher('/position', Pose, queue_size=10)
         self.point = Point()
         self.quaternion = Quaternion()
@@ -39,7 +39,7 @@ def main():
     print("node KalmanPosition successfully initialised")
     # rospy.sleep(1.5)
     self = OdomPose()
-    print("KalmanPos.py: the starting pose is: ")  # %s") %abc.OdomPoseVar
+    print("KalmanPos: the starting pose is: ")  # %s") %abc.OdomPoseVar
     print(self.OdomPoseVar.pose.pose.position)
     rospy.spin()
 
