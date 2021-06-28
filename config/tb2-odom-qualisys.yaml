@@ -1,5 +1,8 @@
 # configuration file for driving the TurtleBot2 with its odometry and the Qualisys system
 
+# file to load coordinates/poses from. 
+# HAS to be in ~/catkin_ws/src/scripts/config/
+evaluation_specification_file: evaluation_specification.yaml
 
 # decides what information get displayed
 # supported: INFO, DEBUG
