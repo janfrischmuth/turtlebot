@@ -29,13 +29,12 @@ class coordinate_server_class:
 
             last_row = self.poses[-1]
             self.pose_amount = last_row[0]
-            rospy.loginfo('coordinate_server: The turtlebot will now drive to %s different coordinates' %
+            rospy.loginfo('\ncoordinate_server:\nThe turtlebot will now drive to %s different coordinates' %
                           self.pose_amount)
             print('------')
 
-            rospy.loginfo('coordinate_server: Destination #%s is \n x = %s \n y = %s \n z = 0' % (
+            rospy.loginfo('\ncoordinate_server:\nDestination #%s is\n x = %s\n y = %s' % (
                 self.coord_count+1, x, y))  # logs destination and coordinate. z is .NaN -> z=0
-            print('------')
 
             # print('coordinate_server: Destination #%s is' %(self.coord_count+1))
             # print('x = %s' % x)
@@ -55,7 +54,7 @@ class coordinate_server_class:
             y = pose_information[1]
             z = pose_information[2]
 
-            rospy.loginfo('coordinate_server: Destination #%s is \n x = %s \n y = %s \n z = 0' % (
+            rospy.loginfo('\ncoordinate_server:\nDestination #%s is\n x = %s\n y = %s' % (
                 self.coord_count+1, x, y))  # logs destination and coordinate
 
             self.coord_count = req.curr_coord_num + 1
@@ -66,13 +65,13 @@ class coordinate_server_class:
             self.stop_robot = True
 
             rospy.loginfo(
-                'coordinate_server: Last coordinate reached! Bye bye.')
+                '\ncoordinate_server:\nLast coordinate reached! Bye bye.')
 
             return{'next_coord_num': self.coord_count, 'x': 0.0, 'y': 0.0, 'z': 0.0, 'stop_robot': self.stop_robot}
 
         elif req.curr_coord_num > self.pose_amount:
-            rospy.loginfo(
-                'ERROR: Last coordinate in list already reached. Server will be closed.')
+            rospy.logerr(
+                'Last coordinate in list already reached.\nServer will be closed.')
             exit()
 
 

@@ -73,14 +73,14 @@ class Controller:
             else:
                 # doesn't work yet, fix this!!!
                 rospy.loginfo(
-                    "Last coordinate reached, OdometryController exits now. Bye bye.")
+                    "\nLast coordinate reached, OdometryController exits now. Bye bye.")
                 # raise SystemExit
                 # sys.exit()
                 # quit()
                 rospy.is_shutdown()
 
         except rospy.ServiceException as e:
-            print("Service call coordinate_server failed: %s" % e)
+            rospy.logerr("\nService call coordinate_server failed: %s" % e)
 
     def driveToGoal(self, CurrPosVar):
         #####
@@ -115,32 +115,58 @@ class Controller:
 
         # sets angular speed to max value if the calculated one is too big
         # considers signed value (+ or -)
-        if v_ang < pi:
-            if v_ang < self.v_max_ang:
-                self.speed.angular.z = v_ang
-                print("------\nif if\nv_ang = %s" % v_ang)
-                print("self.speed.angular.z = %s\n------" %
-                      self.speed.angular.z)
+        if v_ang > 0:
+            if v_ang < pi:
+                # ... 0 < v_ang < 3.14 < ...
+                if v_ang < self.v_max_ang:
+                    self.speed.angular.z = v_ang
+                    #print("------\n+if if\nv_ang = %s" % v_ang)
+                    #print("self.speed.angular.z = %s\n------" %self.speed.angular.z)
+                else:
+                    self.speed.angular.z = self.v_max_ang
+                    #print("------\n+if else\nv_ang = %s" % v_ang)
+                    #print("self.speed.angular.z = %s\n------" %self.speed.angular.z)
+            elif v_ang > pi:
+                # ... < 0 < 3.14 < v_ang < ...
+                v_ang -= pi
+                if v_ang < self.v_max_ang:
+                    self.speed.angular.z = -v_ang
+                    #print("------\n+elif if\nv_ang = %s" % v_ang)
+                    #print("self.speed.angular.z = %s\n------" %self.speed.angular.z)
+                else:
+                    self.speed.angular.z = -self.v_max_ang
+                    #print("------\n+elif else\nv_ang = %s" % v_ang)
+                    #print("self.speed.angular.z = %s\n------" %self.speed.angular.z)
+        elif v_ang < 0:
+            if v_ang < - pi:
+                # ... < v_ang < -3.14 < 0 < ...
+                v_ang = abs(v_ang + pi)
+                if v_ang < self.v_max_ang:
+                    self.speed.angular.z = v_ang
+                    #print("------\n-if if\nv_ang = %s" % v_ang)
+                    #print("self.speed.angular.z = %s\n------" %self.speed.angular.z)
+                else:
+                    #
+                    self.speed.angular.z = self.v_max_ang
+                    #print("------\n-if else\nv_ang = %s" % v_ang)
+                    #print("self.speed.angular.z = %s\n------" %self.speed.angular.z)
             else:
-                self.speed.angular.z = self.v_max_ang
-                print("------\nif else\nv_ang = %s" % v_ang)
-                print("self.speed.angular.z = %s\n------" %
-                      self.speed.angular.z)
-        elif v_ang > pi:
-            v_ang -= pi
-            if v_ang < self.v_max_ang:
-                self.speed.angular.z = -v_ang
-                print("------\nelif if\nv_ang = %s" % v_ang)
-                print("self.speed.angular.z = %s\n------" %
-                      self.speed.angular.z)
-            else:
-                self.speed.angular.z = -self.v_max_ang
-                print("------\nelif else\nv_ang = %s" % v_ang)
-                print("self.speed.angular.z = %s\n------" %
-                      self.speed.angular.z)
+                # ... < 3.14 < v_ang < 0 < ...
+                if v_ang > (-self.v_max_ang):
+                    self.speed.angular.z = v_ang
+                    #print("------\n-else if\nv_ang = %s" % v_ang)
+                    #print("self.speed.angular.z = %s\n------" %self.speed.angular.z)
+                else:
+                    self.speed.angular.z = -self.v_max_ang
+                    #print("------\n-else else\nv_ang = %s" % v_ang)
+                    #print("self.speed.angular.z = %s\n------" %self.speed.angular.z)
         elif v_ang == 0.0:
             self.speed.angular.z = v_ang
             print("SURPRISE!!! v_ang = 0!!! NEVER HAPPENED BEFORE!!!")
+
+        if self.speed.angular.z > self.v_max_ang or self.speed.angular.z < -self.v_max_ang:
+            print("------\n------\nv_ang = %s\nspeed.angular.z = %s" %
+                  (v_ang, self.speed.angular.z))
 
         self.pubVel.publish(self.speed)
 
@@ -172,10 +198,10 @@ class Controller:
 
         if abs(self.PosDiff) < self.accuracy_dist:  # self.alpha < self.accuracy_ang +
             rospy.loginfo(
-                "OdometryController.py: I arrived at\n %s" % self.goal)
+                "\nOdometryController.py: I arrived at\n x = %s\n y = %s\n------\n------"
+                % (self.goal.x, self.goal.y))
             # print("OdometryController.py: I arrived at")
             # print(self.goal)
-            print("------")
             self.req_next_coord(self.coord_count)
             print("------")
             # print(self.req_next_coord)
