@@ -11,6 +11,27 @@ evaluation_specification_file: evaluation_specification.yaml
 # /qualisys/<rigid_body_name>/odom for Qualisys localization
 localization_topic: /odometry/filtered
 
+# set maximum velocity
+# 0.3 [m/s], max. linear velocity of turtlebot2/kobuki
+# 3.14 [rad/s], max. rotational velocity of turtlebot2/kobuki
+# v_max_lin = 0.3 and v_max_ang = 1.0 work well for simulation with TB2
+v_max_lin: 0.3
+v_max_ang: 1.0
+
+# decides how accurate you want the robot to be
+# in [m] and [rad]
+# 0.17 [rad] = 10 deg
+accuracy_dist: 0.1
+accuracy_ang: 0.17
+
+# P-gain (proportional gain) of velocities
+# velocities get calculated by distance of goal
+K_vel_lin: 1
+K_vel_ang: 1
+
+# topics you want to record in the .bag file
+ros_bag: topics
+
 ######## NOT IMPLEMENTED YET
 ######## Please set each .py file to 
 ######## rospy.init_node(<...>, log_level=rospy.<level>) individually
@@ -23,24 +44,3 @@ localization_topic: /odometry/filtered
 # mobile_base for TurtleBot2 in Gazebo, 
 # during real life measurement the name of your rigid body (e.g. RB_TB)
 # mocap_model: RB_TB
-
-# set maximum velocity
-# 0.3 [m/s], max. linear velocity of turtlebot2/kobuki
-# 3.14 [rad/s], max. rotational velocity of turtlebot2/kobuki
-# v_max_lin = 0.3 and v_max_ang = 1.0 work well for simulation with TB2
-v_max_lin: 0.3
-v_max_ang: 1.0
-
-# decides how accurate you want the robot to be
-# in [m] and [rad]
-# 0.17 [rad] = 0.1° 
-accuracy_dist: 0.1
-accuracy_ang: 0.17
-
-# P-gain (proportional gain) of velocities
-# velocities get calculated by distance of goal
-K_vel_lin: 1
-K_vel_ang: 1
-
-# topics you want to record in the .bag file
-ros_bag: topics

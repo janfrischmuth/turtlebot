@@ -78,11 +78,12 @@ class Controller:
             else:
                 # doesn't work yet, fix this!!!
                 rospy.loginfo(
-                    "\nLast coordinate reached, OdometryController exits now. Bye bye.")
+                    "\nOdoemtryController:\n Last coordinate reached, OdometryController exits now.\
+                    \n Bye bye.\n-------\n-------")
                 # raise SystemExit
                 # sys.exit()
                 # quit()
-                rospy.is_shutdown()
+                rospy.signal_shutdown('finished')
 
         except rospy.ServiceException as e:
             rospy.logerr("\nService call coordinate_server failed: %s" % e)
@@ -203,7 +204,7 @@ class Controller:
 
         if abs(self.PosDiff) < self.accuracy_dist:  # self.alpha < self.accuracy_ang +
             rospy.loginfo(
-                "\nOdometryController.py: I arrived at\n x = %s\n y = %s\n------\n------"
+                "\nOdometryController.py:\nI arrived at\n x = %s\n y = %s\n------\n------"
                 % (self.goal.x, self.goal.y))
             # print("OdometryController.py: I arrived at")
             # print(self.goal)
@@ -219,7 +220,8 @@ def main():
     # function to set first coordinate? to prevent driving to (0,0) in the beginning!
     controller = Controller()
     Controller.req_next_coord(controller, controller.coord_count)
-    rospy.spin()
+    while not rospy.is_shutdown():
+        rospy.spin()
 
 
 if __name__ == '__main__':

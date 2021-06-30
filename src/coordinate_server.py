@@ -65,13 +65,13 @@ class coordinate_server_class:
             self.stop_robot = True
 
             rospy.loginfo(
-                '\ncoordinate_server:\nLast coordinate reached! Bye bye.')
+                '\ncoordinate_server:\nLast coordinate reached! Bye bye.\n-------')
 
             return{'next_coord_num': self.coord_count, 'x': 0.0, 'y': 0.0, 'z': 0.0, 'stop_robot': self.stop_robot}
 
         elif req.curr_coord_num > self.pose_amount:
             rospy.logerr(
-                'Last coordinate in list already reached.\nServer will be closed.')
+                'Last coordinate in list already reached.\nServer will be closed.\n-------')
             exit()
 
 
