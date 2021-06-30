@@ -1,5 +1,6 @@
 <launch>
     <rosparam command="load" file="$(find scripts)/config/evaluation_specification.yaml"/>
+    <rosparam command="load" file="$(find scripts)/config/tb2-odom-qualisys.yaml"/>
 
     <node
         name="ekf_node_map" 

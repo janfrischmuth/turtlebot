@@ -16,15 +16,20 @@ import angles
 
 class Controller:
     def __init__(self):
-        # subscriber, publisher, serviceproxies
-        self.subCurrPos = rospy.Subscriber(
-            "/odometry/filtered", Odometry, self.driveToGoal)
-        self.pubVel = rospy.Publisher(
-            '/cmd_vel_mux/input/navi', Twist, queue_size=10)
-        self.send_next_coord_client = rospy.ServiceProxy(
-            'coordinate_server', coordinate_managing)
-        # self.subGoal = rospy.Subscriber("/coordination_handling", Point, self.updateNextCoord)
-        # self.pubArrival = rospy.Publisher('/arrival', String, queue_size=10)
+        # params for turtlebot
+        # see config file for more information
+        # ------
+        # log_level_config gets set in main ...
+        # ... because Controller won't be initialized before setting it
+        self.localization_topic = rospy.get_param("/localization_topic")
+        self.v_max_lin = rospy.get_param("/v_max_lin")
+        self.v_max_ang = rospy.get_param("/v_max_ang")
+        self.accuracy_dist = rospy.get_param("/accuracy_dist")  # [m]
+        self.accuracy_ang = rospy.get_param(
+            "/accuracy_ang")  # [rad]. 0.17 rad = 10 deg
+        self.K_vel_lin = rospy.get_param("/K_vel_lin")
+        self.K_vel_ang = rospy.get_param("/K_vel_ang")
+        self.rate = rospy.Rate(10)  # Hz
 
         # declaration of some global variables
         self.speed = Twist()
@@ -38,17 +43,17 @@ class Controller:
         self.PosDiff = float()
         self.coord_count = 0
 
-        # params for turtlebot
-        self.v_max_lin = 0.3  # max. linear velocity of turtlebot2/kobuki
-        self.v_max_ang = 1.0  # 3.14  # in [rad/s], max. rotational velocity
-        self.accuracy_dist = 0.1  # [m]
-        self.accuracy_ang = 0.17  # [rad]. 0.17 rad = 10 deg
-        self.K_vel_lin = 1.0  # proportional gain
-        self.K_vel_ang = 1.0  # proportional gain
-        self.rate = rospy.Rate(10)  # Hz
+        # subscriber, publisher, serviceproxies
+        self.subCurrPos = rospy.Subscriber(
+            self.localization_topic, Odometry, self.driveToGoal)
+        self.pubVel = rospy.Publisher(
+            '/cmd_vel_mux/input/navi', Twist, queue_size=10)
+        self.send_next_coord_client = rospy.ServiceProxy(
+            'coordinate_server', coordinate_managing)
+        # self.subGoal = rospy.Subscriber("/coordination_handling", Point, self.updateNextCoord)
+        # self.pubArrival = rospy.Publisher('/arrival', String, queue_size=10)
 
-    ### obsolete ###
-    def updateNextCoord(self, nextCoordVar):
+    def updateNextCoord(self, nextCoordVar):  # obsolete ###
         # sets next goal after arriving. callback from subGoal
         self.goal = nextCoordVar
         print("OdometryController.py: I heard the goal is:")
@@ -212,7 +217,8 @@ def main():
     rospy.init_node('OdometryController', log_level=rospy.INFO)
     print("node OdometryController successfully initialised")
     # function to set first coordinate? to prevent driving to (0,0) in the beginning!
-    Controller()
+    controller = Controller()
+    Controller.req_next_coord(controller, controller.coord_count)
     rospy.spin()
 
 

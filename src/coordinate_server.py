@@ -29,9 +29,9 @@ class coordinate_server_class:
 
             last_row = self.poses[-1]
             self.pose_amount = last_row[0]
-            rospy.loginfo('\ncoordinate_server:\nThe turtlebot will now drive to %s different coordinates' %
-                          self.pose_amount)
             print('------')
+            rospy.loginfo('\ncoordinate_server:\nThe turtlebot will now drive to %s different coordinates\n------' %
+                          self.pose_amount)
 
             rospy.loginfo('\ncoordinate_server:\nDestination #%s is\n x = %s\n y = %s' % (
                 self.coord_count+1, x, y))  # logs destination and coordinate. z is .NaN -> z=0
