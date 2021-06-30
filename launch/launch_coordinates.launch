@@ -75,36 +75,11 @@
         pkg="scripts"
         type="coordinate_server.py" output="screen">
     </node>
-    <!--node 
-        name="KalmanPosNode" 
-        pkg="scripts" 
-        type="KalmanPos.py" output="screen">
-    </node-->
     <node 
         name="OdometryControllerNode" 
         pkg="scripts" 
         type="OdometryController.py" output="screen" required="true">
     </node>/>
-
-
-
-    <arg name="real" default="0"/>
-    <!--for real testing-->
-    <!--roslaunch scripts launch_coordinates.launch real:=1-->
-    <group if="$(arg real)">
-      <node 
-        pkg="tf" 
-        type="static_transform_publisher" 
-        name="link_odom_mocap_broadcaster" 
-        args="0 0 0 0 0 0 odom mocap 100">
-      </node>
-      <node 
-        pkg="tf" 
-        type="static_transform_publisher" 
-        name="link2_broadcaster" 
-        args="0.0 0.0 0.4 0.0 0.0 0.0 RB_TB base_footprint 100">
-      </node>
-    </group>
 
     <node
         pkg="tf"
@@ -112,24 +87,31 @@
         name="link_mocap_map_broadcaster"
         args="0 0 0 0 0 0 mocap map 100">
     </node>
-    
-    <!--for simulation-->
-    <!--starts automatically unless argument real:=1 is given-->
-    <!--group unless="$(arg real)">
-      <node 
-        pkg="tf" 
-        type="static_transform_publisher" 
-        name="link1_broadcaster" 
-        args="0 0 0 0 0 0 odom mocap 10">
-      </node>
-      <node 
-        pkg="tf" 
-        type="static_transform_publisher" 
-        name="link_base_footprint_broadcaster" 
-        args="0.0 0.0 0.0 0.0 0.0 0.0 mobile_base base_footprint 100">
-      </node>
-    </group-->
 
+
+    <arg name="record" default="0"/>
+    <group if="$(arg record)">
+        <node
+            name="EKF_Odom_to_Pose_Stamped_Node"
+            pkg="scripts"
+            type="ekf_odom_to_pose_stamped.py">
+        </node>
+        <node
+            name="Odom_to_Pose_Stamped_Node"
+            pkg="scripts"
+            type="odom_to_pose_stamped.py">
+        </node>
+        <node
+            name="bag_record" 
+            pkg="rosbag" 
+            type="record"
+            args="-o $(find scripts)/bagfiles/ 
+                      /qualisys/mobile_base/pose 
+                      /odom_to_pose_stamped 
+                      /ekf_odom_to_pose_stamped">
+        </node>
+    </group>
+    <!--to record, type "roslaunch scripts launch_coordinates.launch record:=1"-->
 
     <arg name="sim" default="0"/>
     <group if="$(arg sim)">
@@ -144,17 +126,4 @@
         </node>
     </group>
     <!--to start qualisys simulator, type "roslaunch scripts launch_coordinates.launch sim:=1" -->
-    
-
-    <arg name="record" default="0"/>
-    <group if="$(arg record)">
-        <node
-            name="bag_record" 
-            pkg="rosbag" 
-            type="record"
-            args="-o $(find scripts)/bagfiles/ /qualisys/mobile_base/odom /odom /odometry/filtered /cmd_vel_mux/input/navi">
-        </node>
-        <!--remap from="/qualisys/mobile_base/odom" to="/qualisys/RB_TB/odom"/-->
-    </group>
-    <!--to record, type "roslaunch scripts launch_coordinates.launch record:=1"-->
 </launch>
