@@ -1,0 +1,16 @@
+# [ id [uint8], point [x [m], y [m], z [m]] ]
+points:
+    0
+
+# [ id [uint8], orientation [roll [deg], pitch [deg], yaw [deg]] ]
+orientations:
+    0
+
+# [ id [uint8], pose [x [m], y [m], z [m], roll [deg], pitch [deg], yaw [deg]] ]
+poses:
+    - [1,  [1.0,  0.0, .NaN, .NaN, .NaN,   0.0] ]
+    - [2,  [2.0,  0.0, .NaN, .NaN, .NaN,   0.0] ]
+
+# [ id [uint8], ? [needs to be defined] ]
+actions:
+    0
