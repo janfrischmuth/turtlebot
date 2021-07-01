@@ -29,18 +29,22 @@ accuracy_ang: 0.17
 K_vel_lin: 1
 K_vel_ang: 1
 
+######## NOT IMPLEMENTED YET
+######## Please set in .launch file
 # topics you want to record in the .bag file
-ros_bag: topics
+# ros_bag: topics
 
 ######## NOT IMPLEMENTED YET
 ######## Please set each .py file to 
 ######## rospy.init_node(<...>, log_level=rospy.<level>) individually
-# decides what information get displayed
+# decides what information get displayed by logging
 # supported: INFO, DEBUG
-# log_level: INFO
+verbosity_level: INFO
 
 ######## NOT IMPLEMENTED YET
+######## Please set odom0 in .launch file
 # model you want to track
+# please only specify the <mocap_model> in /qualisys/<mocap_model>/odom
 # mobile_base for TurtleBot2 in Gazebo, 
-# during real life measurement the name of your rigid body (e.g. RB_TB)
-# mocap_model: RB_TB
+# rigid body name of QTM (e.g. RB_TB) during real life measurement
+# mocap_model: /qualisys/mobile_base/odom

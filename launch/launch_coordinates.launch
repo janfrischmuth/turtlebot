@@ -127,3 +127,9 @@
     </group>
     <!--to start qualisys simulator, type "roslaunch scripts launch_coordinates.launch sim:=1" -->
 </launch>
+
+
+
+<!--try to add mocap_model via this syntax-->
+<!--rosparam   file="$(find 2dnav_pr2)/config/costmap_common_params.yaml" 
+            command="load" ns="local_costmap" /-->

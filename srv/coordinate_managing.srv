@@ -3,5 +3,5 @@ int64 curr_coord_num
 int64 next_coord_num
 float64 x
 float64 y
-float64 z
+float64 yaw
 bool stop_robot
