@@ -28,6 +28,7 @@ accuracy_ang: 0.17
 # velocities get calculated by distance of goal
 K_vel_lin: 1
 K_vel_ang: 1
+K_vel_rot: 1.5 # rotating on the spot is too slow if K = 1
 
 ######## NOT IMPLEMENTED YET
 ######## Please set in .launch file

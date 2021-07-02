@@ -29,6 +29,7 @@ class Controller:
             "/accuracy_ang")  # [rad]. 0.17 rad = 10 deg
         self.K_vel_lin = rospy.get_param("/K_vel_lin")
         self.K_vel_ang = rospy.get_param("/K_vel_ang")
+        self.K_vel_rot = rospy.get_param("/K_vel_rot")
         self.rate = rospy.Rate(10)  # Hz
 
         # declaration of some global variables
@@ -100,6 +101,7 @@ class Controller:
             v_ang = yaw_diff * self.K_vel_ang
             # print(" v_ang = %s" % v_ang)
             self.set_angular_vel(v_ang)
+            self.speed.angular.z *= self.K_vel_rot
             # print("yaw_goal = %s\n yaw = %s \n yaw_diff = %s\n v_ang = %s\n------"
             #      % (self.yaw_goal, (self.yaw*(180/pi)), (yaw_diff*(180/pi)), self.speed.angular.z))
             self.pubVel.publish(self.speed)
@@ -175,7 +177,7 @@ class Controller:
             self.speed.linear.x = 0
             self.pubVel.publish(self.speed)
             self.distance_okay = True
-            print("distance to goal = %s" % self.PosDiff)
+            # print("distance to goal = %s" % self.PosDiff)
         else:
             # goal not reached, publish velocity
             self.pubVel.publish(self.speed)
@@ -238,19 +240,19 @@ class Controller:
 
     def driveToGoal(self, curr_pose_data):
         # calculates speed parameter for twist publisher
+        #
         # drive to coordinate first
-
         if self.distance_okay == False:
             self.go_to_goal_coord(curr_pose_data)
         # then turn to desired yaw
         elif self.distance_okay == True and self.yaw_okay == False:
             self.turn_to_yaw_goal(curr_pose_data)
-        # get next pose
+        # arrival. get next pose
         elif self.distance_okay == True and self.yaw_okay == True:
             rospy.loginfo(
                 "\nOdometryController.py:\nI arrived at\n x = %s\n y = %s\
                     \n yaw = %s\n PosDiff = %s\n------\n------"
-                % (self.goal.x, self.goal.y, self.yaw_goal, self.PosDiff))
+                % (self.goal.x, self.goal.y, (self.yaw_goal * 180/pi), self.PosDiff))
             self.distance_okay = False
             self.yaw_okay = False
             self.req_next_coord(self.coord_count)
