@@ -30,17 +30,14 @@ K_vel_lin: 1
 K_vel_ang: 1
 K_vel_rot: 1.5 # rotating on the spot is too slow if K = 1
 
+# decides what information get displayed by logging
+# supported: INFO, DEBUG
+verbosity_level: INFO
+
 ######## NOT IMPLEMENTED YET
 ######## Please set in .launch file
 # topics you want to record in the .bag file
 # ros_bag: topics
-
-######## NOT IMPLEMENTED YET
-######## Please set each .py file to 
-######## rospy.init_node(<...>, log_level=rospy.<level>) individually
-# decides what information get displayed by logging
-# supported: INFO, DEBUG
-verbosity_level: INFO
 
 ######## NOT IMPLEMENTED YET
 ######## Please set odom0 in .launch file
