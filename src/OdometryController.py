@@ -262,7 +262,7 @@ class Controller:
 
 def main():
     # sleep for easier storing the laptop on the turtlebot
-    # rospy.sleep(3)
+    rospy.sleep(1)  # prevents from skipping first coordinate
     verbosity_level = rospy.get_param("/verbosity_level")
     if verbosity_level == "INFO":
         rospy.init_node('OdometryController', log_level=rospy.INFO)
